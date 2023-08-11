@@ -1,12 +1,12 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "API Documentation",
-        "description": "Description removed for better illustration of structure.",
+        "title": "Documentação API Dewtech",
+        "description": "API de cadastramento de usuários e Autêncicação",
         "contact": {
-            "name": "company",
-            "url": "https://example.test",
-            "email": "admin@example.test"
+            "name": "Dewtech",
+            "url": "https://www.dewtech.io",
+            "email": "wanderson@dewtech.io"
         },
         "license": {
             "name": "Apache 2.0",
@@ -15,14 +15,17 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/users": {
+        "/v1/dewtech/users": {
             "get": {
-                "summary": "Get list of users",
-                "description": "Returns a list of all users.",
-                "operationId": "d83e53ee397e9359c783cc127c690dcb",
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Lista usuários",
+                "description": "Retorna uma lista de usuários.",
+                "operationId": "f01a417fd54b0b89dc27533a6d24f9b2",
                 "responses": {
                     "200": {
-                        "description": "Successful operation",
+                        "description": "Operação realizada com sucesso",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -37,9 +40,12 @@
                 }
             },
             "post": {
+                "tags": [
+                    "Users"
+                ],
                 "summary": "Create a new user",
                 "description": "Create a new user with the provided data.",
-                "operationId": "f903fe759b9720fc656093942a05d88c",
+                "operationId": "2422bb06ef64c371379484c4f4617480",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -91,11 +97,14 @@
                 }
             }
         },
-        "/users/{id}": {
+        "/v1/dewtech/users/{id}": {
             "get": {
+                "tags": [
+                    "Users"
+                ],
                 "summary": "Get user by ID",
                 "description": "Get user information by user ID.",
-                "operationId": "e99e13e65ae078072133c1076102e10b",
+                "operationId": "3fd2b75aee594c8be7f897cb8fd501fb",
                 "parameters": [
                     {
                         "name": "id",
@@ -136,9 +145,12 @@
                 }
             },
             "put": {
+                "tags": [
+                    "Users"
+                ],
                 "summary": "Update user",
                 "description": "Update user information.",
-                "operationId": "601acd807897747c8f1d0073b94b8ab0",
+                "operationId": "ffa181e2dc0be63d6d00b09e0cdd1ba3",
                 "parameters": [
                     {
                         "name": "id",
@@ -202,9 +214,12 @@
                 }
             },
             "delete": {
+                "tags": [
+                    "Users"
+                ],
                 "summary": "Delete user",
                 "description": "Delete user by user ID.",
-                "operationId": "ca3bfc7e1af7dd133610cb2c3f25b73e",
+                "operationId": "009f43dc3a1f342dbb9fbd4417abab0d",
                 "parameters": [
                     {
                         "name": "id",

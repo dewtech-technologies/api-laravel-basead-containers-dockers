@@ -15,7 +15,7 @@ use App\Http\Controllers\Users\UserController;
 */
 
 Route::prefix('/v1/dewtech')->group(function () {
-    Route::prefix('/user')->group(function () {
+    Route::prefix('/users')->group(function () {
         Route::get('/', [UserController::class, 'index']);
         Route::post('/', [UserController::class, 'store']);
         Route::get('/{id}', [UserController::class, 'show']);

@@ -9,20 +9,6 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use OpenApi\Annotations as OA;
 
-/**
- * @OA\Schema(
- *     schema="User",
- *     title="User",
- *     description="User model",
- *     @OA\Property(property="id", type="integer", description="User ID"),
- *     @OA\Property(property="name", type="string", description="User name"),
- *     @OA\Property(property="email", type="string", description="User email"),
- *     @OA\Property(property="password", type="string", description="User password"),
- *     @OA\Property(property="remember_token", type="string", description="User remember token"),
- *     @OA\Property(property="created_at", type="string", format="date-time", description="User creation date and time"),
- *     @OA\Property(property="updated_at", type="string", format="date-time", description="User update date and time"),
- * )
- */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;

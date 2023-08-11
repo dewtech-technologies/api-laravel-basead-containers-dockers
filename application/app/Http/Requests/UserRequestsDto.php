@@ -4,6 +4,19 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+
+/**
+ * @OA\Schema(
+ *     schema="UserRequestsDto",
+ *     type="object",
+ *     required ={"name","email","password","remember_token"}
+ *     @OA\Property(property="id", type="integer", description="User ID"),
+ *     @OA\Property(property="name", type="string", description="User name"),
+ *     @OA\Property(property="email", type="string", description="User email"),
+ *     @OA\Property(property="password", type="string", description="User password"),
+ *     @OA\Property(property="remember_token", type="string", description="User remember token")
+ * )
+ */
 class UserRequestsDto extends FormRequest
 {
 
