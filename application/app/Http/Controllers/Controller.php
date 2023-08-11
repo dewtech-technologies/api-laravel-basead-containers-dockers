@@ -11,7 +11,7 @@ use OpenApi\Annotations as OA;
  * @OA\Info(
  *      version="1.0.0",
  *      title="Documentação API Dewtech",
- *      description="API de cadastramento de usuários e Autêncicação",
+ *      description="API de cadastramento de usuários e Autênticação",
  *      @OA\Contact(
  *          email="wanderson@dewtech.io",
  *          name="Dewtech",

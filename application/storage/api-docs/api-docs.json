@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Documentação API Dewtech",
-        "description": "API de cadastramento de usuários e Autêncicação",
+        "description": "API de cadastramento de usuários e Autênticação",
         "contact": {
             "name": "Dewtech",
             "url": "https://www.dewtech.io",
@@ -31,7 +31,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/User"
+                                        "$ref": "#/components/schemas/UserRequestsDto"
                                     }
                                 }
                             }
@@ -43,8 +43,8 @@
                 "tags": [
                     "Users"
                 ],
-                "summary": "Create a new user",
-                "description": "Create a new user with the provided data.",
+                "summary": "Usuário criado com sucesso",
+                "description": "Cadastramento de usuário.",
                 "operationId": "2422bb06ef64c371379484c4f4617480",
                 "requestBody": {
                     "content": {
@@ -71,7 +71,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "User created successfully",
+                        "description": "Usuário criado com sucesso",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -91,8 +91,15 @@
                             }
                         }
                     },
-                    "422": {
-                        "description": "Validation error"
+                    "500": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -102,8 +109,8 @@
                 "tags": [
                     "Users"
                 ],
-                "summary": "Get user by ID",
-                "description": "Get user information by user ID.",
+                "summary": "Busca usuário pelo ID",
+                "description": "Busca informações do usuário pelo Id.",
                 "operationId": "3fd2b75aee594c8be7f897cb8fd501fb",
                 "parameters": [
                     {
@@ -119,7 +126,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful operation",
+                        "description": "Operacional realizado com sucesso",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -140,7 +147,7 @@
                         }
                     },
                     "404": {
-                        "description": "User not found"
+                        "description": "Usuário não encontrado"
                     }
                 }
             },
@@ -148,8 +155,8 @@
                 "tags": [
                     "Users"
                 ],
-                "summary": "Update user",
-                "description": "Update user information.",
+                "summary": "Atualização de usuário",
+                "description": "Atualização de usuário com sucesso.",
                 "operationId": "ffa181e2dc0be63d6d00b09e0cdd1ba3",
                 "parameters": [
                     {
@@ -188,7 +195,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "User updated successfully",
+                        "description": "Usuário atualizado com sucesso",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -201,6 +208,12 @@
                                         },
                                         "email": {
                                             "type": "string"
+                                        },
+                                        "password": {
+                                            "type": "string"
+                                        },
+                                        "remember_token": {
+                                            "type": "string"
                                         }
                                     },
                                     "type": "object"
@@ -209,7 +222,17 @@
                         }
                     },
                     "404": {
-                        "description": "User not found"
+                        "description": "Usuário não encontrado"
+                    },
+                    "500": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -217,8 +240,8 @@
                 "tags": [
                     "Users"
                 ],
-                "summary": "Delete user",
-                "description": "Delete user by user ID.",
+                "summary": "Excluir um usuário",
+                "description": "Excluir um usuário pelo UserId.",
                 "operationId": "009f43dc3a1f342dbb9fbd4417abab0d",
                 "parameters": [
                     {
@@ -233,11 +256,21 @@
                     }
                 ],
                 "responses": {
-                    "204": {
-                        "description": "User deleted successfully"
+                    "200": {
+                        "description": "Usuário excluído com sucesso"
                     },
                     "404": {
-                        "description": "User not found"
+                        "description": "Usuário não encontrado"
+                    },
+                    "500": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -245,14 +278,14 @@
     },
     "components": {
         "schemas": {
-            "User": {
-                "title": "User",
-                "description": "User model",
+            "UserRequestsDto": {
+                "required": [
+                    "name",
+                    "email",
+                    "password",
+                    "remember_token"
+                ],
                 "properties": {
-                    "id": {
-                        "description": "User ID",
-                        "type": "integer"
-                    },
                     "name": {
                         "description": "User name",
                         "type": "string"
@@ -268,16 +301,19 @@
                     "remember_token": {
                         "description": "User remember token",
                         "type": "string"
-                    },
-                    "created_at": {
-                        "description": "User creation date and time",
+                    }
+                },
+                "type": "object"
+            },
+            "Error": {
+                "properties": {
+                    "message": {
                         "type": "string",
-                        "format": "date-time"
+                        "example": "Error message."
                     },
-                    "updated_at": {
-                        "description": "User update date and time",
-                        "type": "string",
-                        "format": "date-time"
+                    "status": {
+                        "type": "boolean",
+                        "example": false
                     }
                 },
                 "type": "object"
