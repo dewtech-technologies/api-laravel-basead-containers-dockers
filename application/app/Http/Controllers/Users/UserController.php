@@ -181,7 +181,7 @@ class UserController extends Controller
      *      @OA\Response(
      *          response=404,
      *          description="Usuário não encontrado"
-     *      )
+     *      ),
      *      @OA\Response(
      *          response=500,
      *          description="Error",
