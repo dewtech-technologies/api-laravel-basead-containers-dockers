@@ -81,7 +81,9 @@ class UserRepository
     }
     public function delete($id)
     {
-        return $this->users->find($id)->delete();
+        if($this->users->find($id)->delete()){
+            return response()->json(['message' => 'Usuário deletado com sucesso'], 200);
+        }
     }
 
 }
