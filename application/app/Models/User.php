@@ -8,24 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use OpenApi\Annotations as OA;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-/**
- * @OA\Schema(
- *     schema="User",
- *     title="User",
- *     description="User model",
- *     @OA\Property(property="id", type="integer", description="User ID"),
- *     @OA\Property(property="name", type="string", description="User name"),
- *     @OA\Property(property="email", type="string", description="User email"),
- *     @OA\Property(property="password", type="string", description="User password"),
- *     @OA\Property(property="remember_token", type="string", description="User remember token"),
- *     @OA\Property(property="created_at", type="string", format="date-time", description="User creation date and time"),
- *     @OA\Property(property="updated_at", type="string", format="date-time", description="User update date and time"),
- * )
- */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -57,4 +44,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array<int, string>
+     */
+    protected $dates = ['deleted_at'];
 }

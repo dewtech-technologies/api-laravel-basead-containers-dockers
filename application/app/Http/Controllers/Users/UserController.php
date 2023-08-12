@@ -14,17 +14,18 @@ class UserController extends Controller
     public function __construct(UserService $userService) {
         $this->userService = $userService;
     }
-    /**
+     /**
      * @OA\Get(
-     *      path="/users",
-     *      summary="Get list of users",
-     *      description="Returns a list of all users.",
+     *      tags={"Users"},
+     *      path="/v1/dewtech/users",
+     *      summary="Lista usuários",
+     *      description="Retorna uma lista de usuários.",
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation",
+     *          description="Operação realizada com sucesso",
      *          @OA\JsonContent(
      *              type="array",
-     *              @OA\Items(ref="#/components/schemas/User")
+     *              @OA\Items(ref="#/components/schemas/UserRequestsDto")
      *          )
      *      )
      * )
@@ -37,9 +38,10 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *      path="/users",
-     *      summary="Create a new user",
-     *      description="Create a new user with the provided data.",
+     *      tags={"Users"},
+     *      path="/v1/dewtech/users",
+     *      summary="Cadastra usuário",
+     *      description="Cadastramento de usuário.",
      *      @OA\RequestBody(
      *          @OA\JsonContent(
      *              @OA\Property(property="name", type="string"),
@@ -50,7 +52,7 @@ class UserController extends Controller
      *      ),
      *      @OA\Response(
      *          response=201,
-     *          description="User created successfully",
+     *          description="Usuário criado com sucesso",
      *          @OA\JsonContent(
      *              @OA\Property(property="id", type="integer"),
      *              @OA\Property(property="name", type="string"),
@@ -58,8 +60,9 @@ class UserController extends Controller
      *          )
      *      ),
      *      @OA\Response(
-     *          response=422,
-     *          description="Validation error"
+     *          response=500,
+     *          description="Error",
+     *          @OA\JsonContent(ref="#/components/schemas/Error")
      *      )
      * )
      */
@@ -68,11 +71,12 @@ class UserController extends Controller
         return $this->userService->create($request);
     }
 
-    /**
+ /**
      * @OA\Get(
-     *      path="/users/{id}",
-     *      summary="Get user by ID",
-     *      description="Get user information by user ID.",
+     *      tags={"Users"},
+     *      path="/v1/dewtech/users/{id}",
+     *      summary="Busca usuário pelo ID",
+     *      description="Busca informações do usuário pelo Id.",
      *      @OA\Parameter(
      *          name="id",
      *          description="User ID",
@@ -85,7 +89,7 @@ class UserController extends Controller
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation",
+     *          description="Operação realizado com sucesso",
      *          @OA\JsonContent(
      *              @OA\Property(property="id", type="integer"),
      *              @OA\Property(property="name", type="string"),
@@ -94,7 +98,7 @@ class UserController extends Controller
      *      ),
      *      @OA\Response(
      *          response=404,
-     *          description="User not found"
+     *          description="Usuário não encontrado"
      *      )
      * )
      */
@@ -105,9 +109,10 @@ class UserController extends Controller
 
     /**
      * @OA\Put(
-     *      path="/users/{id}",
-     *      summary="Update user",
-     *      description="Update user information.",
+     *      tags={"Users"},
+     *      path="/v1/dewtech/users/{id}",
+     *      summary="Atualização de usuário",
+     *      description="Atualização de usuário com sucesso.",
      *      @OA\Parameter(
      *          name="id",
      *          description="User ID",
@@ -128,16 +133,23 @@ class UserController extends Controller
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="User updated successfully",
+     *          description="Usuário atualizado com sucesso",
      *          @OA\JsonContent(
      *              @OA\Property(property="id", type="integer"),
      *              @OA\Property(property="name", type="string"),
-     *              @OA\Property(property="email", type="string")
+     *              @OA\Property(property="email", type="string"),
+     *              @OA\Property(property="password", type="string"),
+     *              @OA\Property(property="remember_token", type="string")
      *          )
      *      ),
      *      @OA\Response(
      *          response=404,
-     *          description="User not found"
+     *          description="Usuário não encontrado"
+     *      ),
+     *      @OA\Response(
+     *          response=500,
+     *          description="Error",
+     *          @OA\JsonContent(ref="#/components/schemas/Error")
      *      )
      * )
      */
@@ -146,11 +158,12 @@ class UserController extends Controller
         return $this->userService->update($id, $request);
     }
 
-        /**
+   /**
      * @OA\Delete(
-     *      path="/users/{id}",
-     *      summary="Delete user",
-     *      description="Delete user by user ID.",
+     *      tags={"Users"},
+     *      path="/v1/dewtech/users/{id}",
+     *      summary="Excluir um usuário",
+     *      description="Excluir um usuário pelo UserId.",
      *      @OA\Parameter(
      *          name="id",
      *          description="User ID",
@@ -162,12 +175,17 @@ class UserController extends Controller
      *          )
      *      ),
      *      @OA\Response(
-     *          response=204,
-     *          description="User deleted successfully"
+     *          response=200,
+     *          description="Usuário excluído com sucesso"
      *      ),
      *      @OA\Response(
      *          response=404,
-     *          description="User not found"
+     *          description="Usuário não encontrado"
+     *      ),
+     *      @OA\Response(
+     *          response=500,
+     *          description="Error",
+     *          @OA\JsonContent(ref="#/components/schemas/Error")
      *      )
      * )
      */

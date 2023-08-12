@@ -10,12 +10,12 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Info(
  *      version="1.0.0",
- *      title="API Documentation",
- *      description="Description removed for better illustration of structure.",
+ *      title="Documentação API Dewtech",
+ *      description="API de cadastramento de usuários e Autênticação",
  *      @OA\Contact(
- *          email="admin@example.test",
- *          name="company",
- *          url="https://example.test"
+ *          email="wanderson@dewtech.io",
+ *          name="Dewtech",
+ *          url="https://www.dewtech.io"
  *      ),
  *      @OA\License(
  *          name="Apache 2.0",
