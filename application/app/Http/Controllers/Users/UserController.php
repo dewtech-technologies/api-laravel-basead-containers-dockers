@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Users;
 
 use App\Services\UserService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserRequestsDto;
+use App\Http\Requests\User\UserRequestsDto;
 use OpenApi\Annotations as OA;
 
 class UserController extends Controller
