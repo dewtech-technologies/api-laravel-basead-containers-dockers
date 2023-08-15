@@ -84,4 +84,9 @@ class UserRepository
         return $this->users->find($id)->delete();
     }
 
+    public function findByEmail($email)
+    {
+        return User::where('email', $email)->first();
+    }
+
 }
