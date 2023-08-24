@@ -1,9 +1,6 @@
 FROM php:8.2-fpm
 
-# Copy composer.lock and composer.json
-# COPY composer.lock composer.json /var/www/
-
-
+# Atualize os pacotes e instale as dependências
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
@@ -12,45 +9,49 @@ RUN apt-get update && apt-get install -y \
     locales \
     jpegoptim optipng pngquant gifsicle \
     vim \
-    git   \
-    curl  \
+    git \
+    curl \
     zip \
     unzip \
     libpq-dev \
     libzip-dev \
     libexif-dev \
-    libonig-dev 
+    libonig-dev \
+    autoconf \
+    pkg-config \
+    libssl-dev
 
 WORKDIR /var/www
 
-# Clear cache
+# Limpe o cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Instale extensões
+RUN docker-php-ext-install pdo pdo_pgsql mbstring zip exif pcntl gd
 
-# Install extensions
-RUN docker-php-ext-install pdo pdo_pgsql mbstring zip exif pcntl
-RUN docker-php-ext-install gd
+# Instale a extensão phpredis usando pecl e habilite-a
+RUN pecl install redis && docker-php-ext-enable redis
 
-# Install composer
+# Instale o composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Add user for laravel application
+# Adicione um usuário para a aplicação Laravel
 RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
 
-# Copy existing application directory contents
+# Copie o conteúdo do diretório da aplicação existente
 COPY . /var/www
 
-# Copy existing application directory permissions
+# Copie as permissões do diretório da aplicação existente
 COPY --chown=www:www . /var/www
 
 # Ajuste de permissões
 RUN chown -R www-data:www-data /var/www/application
 RUN chmod -R 777 /var/www/application
 
-# Change current user to www
+# Mude o usuário atual para www
 USER www
 
-# Expose port 9000 and start php-fpm server
+# Exponha a porta 9000 e inicie o servidor php-fpm
 EXPOSE 9000
 CMD ["php-fpm"]
