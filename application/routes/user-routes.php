@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthUserController;
-use App\Http\Controllers\Auth\AuthApplicationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Users\UserController;
 
@@ -20,7 +19,18 @@ Route::prefix('/v1/dewtech')->group(function () {
 
     Route::post('/login', [AuthUserController::class, 'login']);
 
-    Route::post('/loginApplication', [AuthApplicationController::class, 'loginApplication']);
+    // Rotas protegidas pelo middleware
+    Route::middleware(['auth:api'])->group(function () {
+
+        // Rota de Logout
+        Route::post('logout',  [AuthUserController::class, 'logout']);
+
+        // Rota para Refresh Token
+        Route::post('refreshtoken',  [AuthUserController::class, 'refreshToken']);
+
+        // (Opcional) Rota para validar token, se você realmente precisar dela
+        Route::post('validateToken', [AuthUserController::class, 'validateToken']);
+    });
 
     Route::prefix('/users')->group(function () {
         Route::get('/', [UserController::class, 'index']);

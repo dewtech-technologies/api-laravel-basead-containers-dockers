@@ -78,6 +78,109 @@
                 }
             }
         },
+        "/v1/dewtech/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Invalidar token de acesso",
+                "description": "Efetuar logout e invalida o token de acesso",
+                "operationId": "logout",
+                "responses": {
+                    "200": {
+                        "description": "Logout realizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/dewtech/refreshtoken": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Refresh token",
+                "description": "Renova token de acesso",
+                "operationId": "refreshtoken",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "description": "Bearer Token",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "token": "Bearer abcd1234"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Update token com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/dewtech/validateToken": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "validate Token",
+                "description": "Valida token de acesso",
+                "operationId": "validateToken",
+                "responses": {
+                    "200": {
+                        "description": "Valida token com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ]
+            }
+        },
         "/v1/dewtech/users": {
             "get": {
                 "tags": [
@@ -358,6 +461,18 @@
                 },
                 "type": "object"
             },
+            "RefreshTokenRequestDto": {
+                "required": [
+                    "token"
+                ],
+                "properties": {
+                    "token": {
+                        "description": "Bearer token",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "UserRequestsDto": {
                 "required": [
                     "name",
@@ -397,6 +512,48 @@
                     }
                 },
                 "type": "object"
+            },
+            "SuccessResponse": {
+                "properties": {
+                    "status": {
+                        "type": "boolean",
+                        "example": "true"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Success message."
+                    },
+                    "code": {
+                        "type": "int64",
+                        "example": 200
+                    }
+                },
+                "type": "object"
+            },
+            "TokenRefresh": {
+                "properties": {
+                    "status": {
+                        "type": "boolean",
+                        "example": "true"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Success message."
+                    },
+                    "code": {
+                        "type": "int64",
+                        "example": 200
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "jwtAuth": {
+                "type": "apiKey",
+                "description": "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                "name": "Authorization",
+                "in": "header"
             }
         }
     }
