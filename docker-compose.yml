@@ -37,6 +37,7 @@ services:
       dockerfile: docker/redis/DockerFile
     container_name: dewtech-redis
     restart: always
+    command: redis-server --requirepass "Docker@6379"
     ports:
       - "6379:6379"
     volumes:
