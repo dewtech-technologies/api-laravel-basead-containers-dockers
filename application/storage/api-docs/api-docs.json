@@ -181,6 +181,141 @@
                 ]
             }
         },
+        "/v1/dewtech/redis": {
+            "post": {
+                "tags": [
+                    "Redis"
+                ],
+                "summary": "Envia dados para o Redis",
+                "description": "Envia dados para o Redi.",
+                "operationId": "efe0f6f833bc1c49643a83f94e9e8fe0",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Dados enviado para o Redis com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "uuid": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/dewtech/redis/{id}": {
+            "get": {
+                "tags": [
+                    "Redis"
+                ],
+                "summary": "Busca dados no Redis",
+                "description": "Busca informações no Redis pela key.",
+                "operationId": "45c6516cf3b3a511ce32187d60355565",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Chave de registro no Redis",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação realizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Registro não encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Redis"
+                ],
+                "summary": "Excluir registro no Redis",
+                "description": "Excluir registro no Redis pela key do redis.",
+                "operationId": "340787244112612c50ab9a2ab13f7b83",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Chave de registro no Redis",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Registro Excluído com sucesso"
+                    },
+                    "404": {
+                        "description": "Registro não encontrado"
+                    },
+                    "500": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/v1/dewtech/users": {
             "get": {
                 "tags": [
@@ -463,11 +598,28 @@
             },
             "RefreshTokenRequestDto": {
                 "required": [
-                    "token"
+                    "refresh_token"
                 ],
                 "properties": {
                     "token": {
                         "description": "Bearer token",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "RedisRequestDto": {
+                "required": [
+                    "name",
+                    "email"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "User name",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "User email",
                         "type": "string"
                     }
                 },

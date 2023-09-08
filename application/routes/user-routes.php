@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthUserController;
+use App\Http\Controllers\Redis\RedisController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Users\UserController;
 
@@ -30,6 +31,12 @@ Route::prefix('/v1/dewtech')->group(function () {
 
         // (Opcional) Rota para validar token, se você realmente precisar dela
         Route::post('validateToken', [AuthUserController::class, 'validateToken']);
+    });
+
+    Route::prefix('/redis')->group(function () {
+        Route::post('/', [RedisController::class, 'store']);
+        Route::get('/{id}', [RedisController::class, 'show']);
+        Route::delete('/{id}', [RedisController::class, 'destroy']);
     });
 
     Route::prefix('/users')->group(function () {
