@@ -7,6 +7,7 @@ use OpenApi\Annotations as OA;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUser\LoginRequestDto;
 use App\Http\Requests\LoginUser\RefreshTokenRequestDto;
+use App\Http\Requests\UpdatePassword\UpdatePasswordRequestDto;
 
 class AuthUserController extends Controller
 {
@@ -137,5 +138,40 @@ class AuthUserController extends Controller
         return $this->authService->validateToken();
     }
 
+    /**
+     * @OA\Post(
+     *     path="/v1/dewtech/update-password",
+     *     operationId="updatePassword",
+     *     tags={"Auth"},
+     *     summary="Atualizar senha",
+     *     description="Atualizar a senha do usuário logado",
+     *     security={{"jwtAuth":{}}},
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(property="current_password", type="string", description="Current password"),
+     *                 @OA\Property(property="new_password", type="string", description="New password"),
+     *                 example={"current_password": "oldPass123", "new_password": "newPass1234"}
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Senha atualizada com sucesso",
+     *         @OA\JsonContent(ref="#/components/schemas/SuccessResponse")
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Invalid credentials"
+     *     )
+     * )
+     */
+    public function updatePassword(UpdatePasswordRequestDto $request)
+    {
+        return $this->authService->updatePassword($request);
+    }
 
 }

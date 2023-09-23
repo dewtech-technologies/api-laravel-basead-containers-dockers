@@ -31,6 +31,9 @@ Route::prefix('/v1/dewtech')->group(function () {
 
         // (Opcional) Rota para validar token, se você realmente precisar dela
         Route::post('validateToken', [AuthUserController::class, 'validateToken']);
+
+        // Rota para Update-password
+        Route::post('update-password',  [AuthUserController::class, 'updatePassword']);
     });
 
     Route::prefix('/redis')->group(function () {

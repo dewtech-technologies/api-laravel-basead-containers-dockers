@@ -181,6 +181,60 @@
                 ]
             }
         },
+        "/v1/dewtech/update-password": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Atualizar senha",
+                "description": "Atualizar a senha do usuário logado",
+                "operationId": "updatePassword",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "current_password": {
+                                        "description": "Current password",
+                                        "type": "string"
+                                    },
+                                    "new_password": {
+                                        "description": "New password",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "current_password": "oldPass123",
+                                    "new_password": "newPass1234"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Senha atualizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ]
+            }
+        },
         "/v1/dewtech/redis": {
             "post": {
                 "tags": [
@@ -620,6 +674,23 @@
                     },
                     "email": {
                         "description": "User email",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdatePasswordRequestDto": {
+                "required": [
+                    "current_password",
+                    "new_password"
+                ],
+                "properties": {
+                    "current_password": {
+                        "description": "User's current password",
+                        "type": "string"
+                    },
+                    "new_password": {
+                        "description": "User's new password",
                         "type": "string"
                     }
                 },

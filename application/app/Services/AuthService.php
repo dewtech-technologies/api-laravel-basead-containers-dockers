@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use app\Http\Requests\UpdatePassword\UpdatePasswordRequestDto;
+use App\Repositories\AuthRepository;
 use Carbon\Carbon;
 use Lcobucci\JWT\Token\Plain;
 use Laravel\Passport\Passport;
@@ -15,10 +17,12 @@ use App\Http\Requests\LoginApplication\LoginApplicationRequestDto;
 class AuthService
 {
     protected $tokenRedisService;
+    protected $authRepository;
 
-    public function __construct(TokenRedisService $tokenRedisService)
+    public function __construct(TokenRedisService $tokenRedisService, AuthRepository $authRepository)
     {
         $this->tokenRedisService = $tokenRedisService;
+        $this->authRepository = $authRepository;
     }
 
     public function authenticate(LoginRequestDto $requestDto)
@@ -127,5 +131,9 @@ class AuthService
         } catch (\Exception $e) {
             return false;
         }
+    }
+    public function updatePassword(UpdatePasswordRequestDto $request)
+    {
+        return $this->authRepository->updatePassword($request);
     }
 }
