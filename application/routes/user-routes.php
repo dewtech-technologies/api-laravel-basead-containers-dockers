@@ -19,6 +19,8 @@ use App\Http\Controllers\Users\UserController;
 Route::prefix('/v1/dewtech')->group(function () {
 
     Route::post('/login', [AuthUserController::class, 'login']);
+    Route::post('/reset-password', [AuthUserController::class, 'resetPassword']);
+    Route::post('/reset-password-token', [AuthUserController::class, 'resetPasswordToken']);
 
     // Rotas protegidas pelo middleware
     Route::middleware(['auth:api'])->group(function () {

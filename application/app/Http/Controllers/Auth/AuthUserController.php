@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUser\LoginRequestDto;
 use App\Http\Requests\LoginUser\RefreshTokenRequestDto;
 use App\Http\Requests\UpdatePassword\UpdatePasswordRequestDto;
+use App\Http\Requests\ResetPassword\ResetPasswordRequestDto;
+use App\Http\Requests\ResetPassword\ResetPasswordTokenRequestDto;
 
 class AuthUserController extends Controller
 {
@@ -172,6 +174,74 @@ class AuthUserController extends Controller
     public function updatePassword(UpdatePasswordRequestDto $request)
     {
         return $this->authService->updatePassword($request);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/v1/dewtech/reset-password",
+     *     operationId="resetPasswordRequest",
+     *     tags={"Auth"},
+     *     summary="Solicita redefinição de senha",
+     *     description="Envia um e-mail com um link para redefinir a senha",
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(property="email", type="string", description="User email"),
+     *                 example={"email": "user@example.com"}
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Email enviado com sucesso",
+     *         @OA\JsonContent(ref="#/components/schemas/SuccessResponse")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Email não encontrado"
+     *     )
+     * )
+     */
+    public function resetPassword(ResetPasswordRequestDto $request)
+    {
+        return $this->authService->handleResetPasswordRequest($request->email);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/v1/dewtech/reset-password-token",
+     *     tags={"Auth"},
+     *     summary="Reset user password with a token",
+     *     description="This endpoint resets the user's password using a password reset token.",
+     *
+     *     @OA\RequestBody(
+     *         description="Reset Password Token Information",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/ResetPasswordTokenRequestDto")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Password reset successful",
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request, invalid input data"
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found"
+     *     ),
+     * )
+     */
+    public function resetPasswordToken(ResetPasswordTokenRequestDto $request)
+    {
+        return $this->authService->resetByToken($request);
     }
 
 }

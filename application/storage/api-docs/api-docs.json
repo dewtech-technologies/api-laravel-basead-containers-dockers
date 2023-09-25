@@ -235,6 +235,82 @@
                 ]
             }
         },
+        "/v1/dewtech/reset-password": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Solicita redefinição de senha",
+                "description": "Envia um e-mail com um link para redefinir a senha",
+                "operationId": "resetPasswordRequest",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "User email",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "email": "user@example.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Email enviado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Email não encontrado"
+                    }
+                }
+            }
+        },
+        "/v1/dewtech/reset-password-token": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Reset user password with a token",
+                "description": "This endpoint resets the user's password using a password reset token.",
+                "operationId": "25a5d4c4db2e4fbcb126006c8f4682ca",
+                "requestBody": {
+                    "description": "Reset Password Token Information",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResetPasswordTokenRequestDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password reset successful"
+                    },
+                    "400": {
+                        "description": "Bad request, invalid input data"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
         "/v1/dewtech/redis": {
             "post": {
                 "tags": [
@@ -674,6 +750,41 @@
                     },
                     "email": {
                         "description": "User email",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ResetPasswordRequestDto": {
+                "required": [
+                    "email"
+                ],
+                "properties": {
+                    "email": {
+                        "description": "User's email address",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ResetPasswordTokenRequestDto": {
+                "required": [
+                    "email",
+                    "token",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "description": "Endereço de email do usuário",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "token": {
+                        "description": "Token de redefinição de senha",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "Nova senha do usuário",
                         "type": "string"
                     }
                 },
