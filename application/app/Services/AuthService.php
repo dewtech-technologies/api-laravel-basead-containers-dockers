@@ -3,8 +3,12 @@
 namespace App\Services;
 
 use app\Http\Requests\UpdatePassword\UpdatePasswordRequestDto;
+use app\Http\Requests\ResetPassword\ResetPasswordTokenRequestDto;
 use App\Repositories\AuthRepository;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 use Lcobucci\JWT\Token\Plain;
 use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +17,7 @@ use Laravel\Passport\RefreshTokenRepository;
 use App\Http\Requests\LoginUser\LoginRequestDto;
 use App\Http\Requests\LoginUser\RefreshTokenRequestDto;
 use App\Http\Requests\LoginApplication\LoginApplicationRequestDto;
+use App\Notifications\ResetPasswordNotification;
 
 class AuthService
 {
@@ -134,6 +139,33 @@ class AuthService
     }
     public function updatePassword(UpdatePasswordRequestDto $request)
     {
-        return $this->authRepository->updatePassword($request);
+        // 1. Verifique se a senha atual é válida
+        $user = Auth::user();
+        return $this->authRepository->updatePassword($user,$request);
     }
+
+    public function handleResetPasswordRequest($email)
+    {
+        $user = $this->authRepository->findByEmail($email);
+
+        if (!$user) {
+            return response()->json(['message' => 'Email não encontrado'], 404);
+        }
+
+        // Gere um token (por simplicidade, vamos usar o Str::random)
+        $token = Str::random(60);
+        $hashedToken = Hash::make($token);
+
+        // Salva o token na base de dados (supomos que você tem um campo 'password_reset_token' no modelo User)
+        $this->authRepository->setResetToken($user, $hashedToken);
+
+        $user->notify(new ResetPasswordNotification($hashedToken));
+
+        return response()->json(['message' => 'E-mail de redefinição de senha enviado com sucesso!']);
+    }
+    public function resetByToken(ResetPasswordTokenRequestDto $request)
+    {
+        return $this->authRepository->resetPasswordByToken($request);
+    }
+
 }
